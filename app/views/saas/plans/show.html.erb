@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Saas product:</strong>
+  <%= @plan.product.name %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @plan.name %>
+</p>
+
+<p>
+  <strong>Stripe:</strong>
+  <%= @plan.stripe_id %>
+</p>
+
+<p>
+  <strong>Price in cents:</strong>
+  <%= @plan.price_in_cents %>
+</p>
+
+<p>
+  <strong>Interval:</strong>
+  <%= @plan.interval %>
+</p>
+
+<p>
+  <strong>Trial period:</strong>
+  <%= @plan.trial_period %>
+</p>
+
+<%= link_to 'Edit', edit_plan_path(@plan) %> |
+<%= link_to 'Back', plans_path %>

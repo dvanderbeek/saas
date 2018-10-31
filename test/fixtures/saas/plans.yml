@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  saas_product: one
+  name: MyString
+  stripe_id: MyString
+  price_in_cents: 1
+  interval: MyString
+  trial_period: 1
+
+two:
+  saas_product: two
+  name: MyString
+  stripe_id: MyString
+  price_in_cents: 1
+  interval: MyString
+  trial_period: 1

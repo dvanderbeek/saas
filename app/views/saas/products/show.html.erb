@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @product.name %>
+</p>
+
+<p>
+  <strong>Stripe ID:</strong>
+  <%= @product.stripe_id %>
+</p>
+
+<p>
+  <strong>Statement descriptor:</strong>
+  <%= @product.statement_descriptor || "None" %>
+</p>
+
+<p>
+  <strong>Unit label:</strong>
+  <%= @product.unit_label %>
+</p>
+
+<h2>Pricing Plans</h2>
+
+<ul>
+<% @product.plans.each do |plan| %>
+  <li><%= link_to plan.name, [:edit, plan] %></li>
+<% end %>
+</ul>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  stripe_id: MyString
+  statement_descriptor: MyString
+  unit_label: MyString
+
+two:
+  name: MyString
+  stripe_id: MyString
+  statement_descriptor: MyString
+  unit_label: MyString
