@@ -1,5 +1,4 @@
 Saas::Engine.routes.draw do
-  resources :plans
-  resources :products
+  resources :products, only: [:index, :show]
   resources :pricing, only: :index
 end
