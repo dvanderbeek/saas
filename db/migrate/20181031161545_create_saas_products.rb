@@ -1,6 +1,6 @@
 class CreateSaasProducts < ActiveRecord::Migration[5.2]
   def change
-    create_table :saas_products do |t|
+    create_table :saas_products, id: :uuid do |t|
       t.string :name
       t.string :stripe_id
       t.string :statement_descriptor

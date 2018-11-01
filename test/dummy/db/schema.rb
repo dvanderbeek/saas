@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_31_165356) do
+ActiveRecord::Schema.define(version: 2018_11_01_014757) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "saas_plans", force: :cascade do |t|
-    t.bigint "product_id"
+  create_table "saas_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "saas_plans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "product_id"
     t.string "name"
     t.string "stripe_id"
     t.integer "price_in_cents"
@@ -27,7 +35,7 @@ ActiveRecord::Schema.define(version: 2018_10_31_165356) do
     t.index ["product_id"], name: "index_saas_plans_on_product_id"
   end
 
-  create_table "saas_products", force: :cascade do |t|
+  create_table "saas_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "stripe_id"
     t.string "statement_descriptor"
@@ -35,6 +43,18 @@ ActiveRecord::Schema.define(version: 2018_10_31_165356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "plans_count", default: 0
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "saas_plans", "saas_products", column: "product_id"
