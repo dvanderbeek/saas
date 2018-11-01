@@ -16,13 +16,6 @@ ActiveRecord::Schema.define(version: 2018_11_01_014757) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "saas_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.uuid "owner_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "saas_plans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "product_id"
     t.string "name"
