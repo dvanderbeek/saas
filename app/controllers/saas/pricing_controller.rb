@@ -1,5 +1,5 @@
 module Saas
-  class PricingController < ApplicationController
+  class PricingController < Saas::ApplicationController
     def index
       @products = Product.includes(:plans).all
     end
