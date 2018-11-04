@@ -2,6 +2,7 @@ module Saas
   class SubscriptionsController < Saas::ApplicationController
     before_action :authenticate_user!
 
+    # TODO: remove current_user.account, add authorization
     def edit
       if @subscription = Subscription.find_by(subscriber: current_user.account)
         @upcoming     = @subscription.upcoming_invoice
