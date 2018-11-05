@@ -90,10 +90,10 @@
               <div class="list-group-item">
                 <div class="row">
                   <div class="col-1">
-                    <% if ["succeeded", "paid"].include?(charge.status) %>
-                      <%= icon('fas', 'check', class: 'text-success') %>
-                    <% elsif ["Partial refund", "Full refund"].include?(charge.status) %>
+                    <% if charge.refunded? %>
                       <%= icon('fas', 'exclamation-triangle', class: 'text-info', data: { toggle: "tooltip" }, title: "#{number_to_currency(charge.amount_refunded_cents / 100.0)} refunded") %>
+                    <% elsif ["succeeded", "paid"].include?(charge.status) %>
+                      <%= icon('fas', 'check', class: 'text-success') %>
                     <% else %>
                       <%= icon('fas', 'exclamation-triangle', class: 'text-danger') %>
                     <% end %>
