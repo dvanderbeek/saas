@@ -6,6 +6,7 @@ module Saas
 
     belongs_to :plan
     belongs_to :subscriber, polymorphic: true
+    has_many :charges
 
     validates :stripe_customer_id, presence: true
 
@@ -31,10 +32,6 @@ module Saas
 
     def upcoming_invoice
       stripe_customer.upcoming_invoice
-    end
-
-    def charges
-      stripe_customer.charges
     end
 
     private

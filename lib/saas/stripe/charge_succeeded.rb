@@ -2,9 +2,22 @@ module Saas
   module Stripe
     class ChargeSucceeded
       def call(event)
-        puts "CHARGE SUCCEEDED: #{event}"
-        # TODO: Create charge model to save details
-        # https://github.com/jasoncharnes/pay/commit/4be0d0591403ce6a599b4633d00248732da5a3a7
+        object = event.data.object
+        subscription = ::Saas::Subscription.find_by(stripe_customer_id: object.source.customer)
+
+        return if subscription.charges.where(stripe_id: object.id).any?
+
+        subscription.charges.create(
+          stripe_id: object.id,
+          amount_cents: object.amount,
+          amount_refunded: object.amount_refunded,
+          status: object.status,
+          created_at: Time.zone.at(object.created),
+          card_brand: object.source.brand,
+          card_last_4: object.source.last4,
+          card_exp_month: object.source.exp_month,
+          card_exp_year: object.source.exp_year,
+        )
       end
     end
   end
