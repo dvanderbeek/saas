@@ -1,8 +1,9 @@
 require "saas/engine"
 require "stripe"
+require "stripe_event"
 
 module Saas
-  mattr_accessor :stripe_secret_key, :stripe_public_key
+  mattr_accessor :stripe_secret_key, :stripe_public_key, :stripe_signing_secret
 
   def self.configure
     yield self
@@ -10,5 +11,9 @@ module Saas
 
   def self.stripe_secret_key=(key)
     @@stripe_secret_key = ::Stripe.api_key = key
+  end
+
+  def self.stripe_signing_secret=(secret)
+    @@stripe_signing_secret = ::StripeEvent.signing_secret = secret
   end
 end

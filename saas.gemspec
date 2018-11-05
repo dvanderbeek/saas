@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.2.1"
   s.add_dependency "stripe"
+  s.add_dependency "stripe_event"
 
   s.add_development_dependency "pg"
   s.add_development_dependency "devise"
