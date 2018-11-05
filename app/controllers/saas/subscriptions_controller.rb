@@ -3,9 +3,8 @@ module Saas
     before_action :authenticate_user!
 
     def edit
-      if @subscription = Subscription.find_by(subscriber: current_subscriber)
-        @upcoming     = @subscription.upcoming_invoice
-        @charges      = @subscription.charges
+      if @subscription = Subscription.includes(:charges).find_by(subscriber: current_subscriber)
+        @upcoming = @subscription.upcoming_invoice
       else
         @subscription = Subscription.new(subscriber: current_subscriber)
       end

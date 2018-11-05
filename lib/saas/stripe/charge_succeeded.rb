@@ -10,7 +10,7 @@ module Saas
         subscription.charges.create(
           stripe_id: object.id,
           amount_cents: object.amount,
-          amount_refunded: object.amount_refunded,
+          amount_refunded_cents: object.amount_refunded,
           status: object.status,
           created_at: Time.zone.at(object.created),
           card_brand: object.source.brand,

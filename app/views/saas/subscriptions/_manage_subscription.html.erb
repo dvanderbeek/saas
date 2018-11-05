@@ -84,9 +84,9 @@
         <div class="card-header">
           Payment History
         </div>
-        <% if @charges.data.length > 0 %>
+        <% if @subscription.charges.length > 0 %>
           <div class="list-group list-group-flush">
-            <% @charges.each do |charge| %>
+            <% @subscription.charges.each do |charge| %>
               <div class="list-group-item">
                 <div class="row">
                   <div class="col-1">
@@ -96,9 +96,9 @@
                       <%= icon('fas', 'exclamation-triangle', class: 'text-danger') %>
                     <% end %>
                   </div>
-                  <div class="col-3"><%= date_from_stripe_timestamp charge.created %></div>
-                  <div class="col-6"><%= charge.source.brand %> ending in <%= charge.source.last4 %></div>
-                  <div class="col-2"><%= number_to_currency charge.amount / 100.0 %></div>
+                  <div class="col-3"><%= charge.created_at.strftime("%Y-%m-%d") %></div>
+                  <div class="col-6"><%= charge.card_brand %> ending in <%= charge.card_last_4 %></div>
+                  <div class="col-2"><%= number_to_currency charge.amount_cents / 100.0 %></div>
                 </div>
               </div>
             <% end %>
