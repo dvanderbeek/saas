@@ -25,8 +25,8 @@
         </div>
         <div class="card-body">
           <p>
-            <strong><%= @subscription.stripe_card.brand %> **** **** **** <%= @subscription.last_4 %></strong>
-            Expiration: <strong><%= @subscription.stripe_card.exp_month %>/<%= @subscription.stripe_card.exp_year %></strong>
+            <strong><%= @subscription.card_brand %> **** **** **** <%= @subscription.last_4 %></strong>
+            Expiration: <strong><%= @subscription.card_exp_month %>/<%= @subscription.card_exp_year %></strong>
           </p>
 
           <%= form_with(model: @subscription, url: subscription_path, method: :patch, local: true) do |form| %>

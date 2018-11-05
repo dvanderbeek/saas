@@ -1,5 +1,3 @@
-# TODO: Save brand, exp_month, exp_year; update manage subscription partial
-
 module Saas
   class Subscription < ApplicationRecord
     attr_accessor :stripe_token
@@ -54,6 +52,9 @@ module Saas
         self.stripe_customer_id = stripe_customer.id
         self.stripe_id = stripe_subscription.id
         self.last_4 = stripe_card.last4
+        self.card_brand = stripe_card.brand
+        self.card_exp_month = stripe_card.exp_month
+        self.card_exp_year = stripe_card.exp_year
       rescue => e
         handle_exception(e)
       end
@@ -63,6 +64,9 @@ module Saas
           stripe_customer.source = stripe_token
           stripe_customer.save
           self.last_4 = stripe_card.last4
+          self.card_brand = stripe_card.brand
+          self.card_exp_month = stripe_card.exp_month
+          self.card_exp_year = stripe_card.exp_year
         else
           stripe_subscription.items = [{
             id: stripe_subscription.items.data[0].id,
