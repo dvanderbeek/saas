@@ -1,6 +1,8 @@
 require "saas/engine"
 require "stripe"
 require "stripe_event"
+require "saas/stripe/charge_succeeded"
+require "saas/stripe/charge_refunded"
 
 module Saas
   mattr_accessor :stripe_secret_key, :stripe_public_key, :stripe_signing_secret

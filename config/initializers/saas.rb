@@ -9,9 +9,7 @@ if rails_config && rails_config[:stripe]
   end
 
   StripeEvent.configure do |events|
-    events.subscribe 'charge.succeeded' do |event|
-      # TODO: create charge model and save details
-      puts "CHARGE SUCCEEDED: #{event}"
-    end
+    events.subscribe 'charge.succeeded', Saas::Stripe::ChargeSucceeded.new
+    events.subscribe 'charge.refunded', Saas::Stripe::ChargeRefunded.new
   end
 end
