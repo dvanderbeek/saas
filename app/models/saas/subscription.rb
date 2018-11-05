@@ -36,9 +36,8 @@ module Saas
 
       def create_stripe_subscription
         stripe_customer = ::Stripe::Customer.create(
-          # TODO: require subscriber to have email and description methods. don't go through owner.
-          email: subscriber.owner.email,
-          description: subscriber.owner.name,
+          email: subscriber.email,
+          description: subscriber.description,
           source: stripe_token,
         )
 
@@ -79,20 +78,20 @@ module Saas
       end
 
       def handle_exception(e)
-        if e.is_a? Stripe::CardError
+        if e.is_a? ::Stripe::CardError
           self.errors.add :base, e.message
           self.stripe_card_token = nil
           false
-        elsif e.is_a? Stripe::InvalidRequestError
+        elsif e.is_a? ::Stripe::InvalidRequestError
           self.errors.add :base, "There was a problem with your credit card."
           false
-        elsif e.is_a? Stripe::AuthenticationError
+        elsif e.is_a? ::Stripe::AuthenticationError
           self.errors.add :base, "There was a problem connecting to Stripe. Please try again."
           false
-        elsif e.is_a? Stripe::APIConnectionError
+        elsif e.is_a? ::Stripe::APIConnectionError
           self.errors.add :base, "There was a problem connecting to Stripe. Please try again."
           false
-        elsif e.is_a? Stripe::StripeError
+        elsif e.is_a? ::Stripe::StripeError
           self.errors.add :base, "There was a problem processing your payment. Please try again."
           false
         else

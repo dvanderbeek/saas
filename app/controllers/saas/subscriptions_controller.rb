@@ -38,10 +38,5 @@ module Saas
       def subscription_params
         params.fetch(:subscription, {}).permit(:plan_id, :stripe_token)
       end
-
-      # TODO: Main app should provide this method; Add authorization
-      def current_subscriber
-        current_user.account
-      end
   end
 end
