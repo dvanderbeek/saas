@@ -23,7 +23,7 @@ module Saas
     end
 
     def update
-      @subscription = Subscription.find_by(subscriber: current_subscriber)
+      @subscription = Subscription.includes(:charges).find_by(subscriber: current_subscriber)
       @subscription.stripe_token = params[:stripeToken]
 
       if @subscription.update(subscription_params)
