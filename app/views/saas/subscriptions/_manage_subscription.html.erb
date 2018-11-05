@@ -92,6 +92,8 @@
                   <div class="col-1">
                     <% if ["succeeded", "paid"].include?(charge.status) %>
                       <%= icon('fas', 'check', class: 'text-success') %>
+                    <% elsif ["Partial refund", "Full refund"].include?(charge.status) %>
+                      <%= icon('fas', 'exclamation-triangle', class: 'text-info', data: { toggle: "tooltip" }, title: "#{number_to_currency(charge.amount_refunded_cents / 100.0)} refunded") %>
                     <% else %>
                       <%= icon('fas', 'exclamation-triangle', class: 'text-danger') %>
                     <% end %>
@@ -111,3 +113,6 @@
       </div>
     </div>
   </div>
+  <script>
+     $('[data-toggle="tooltip"]').tooltip()
+  </script>
