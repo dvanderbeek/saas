@@ -1,3 +1,5 @@
+# TODO: Save brand, exp_month, exp_year; update manage subscription partial
+
 module Saas
   class Subscription < ApplicationRecord
     attr_accessor :stripe_token
@@ -11,11 +13,11 @@ module Saas
     before_validation :update_stripe_subscription, on: :update
 
     def stripe_subscription
-      @stripe_subscription ||= Stripe::Subscription.retrieve(stripe_id)
+      @stripe_subscription ||= ::Stripe::Subscription.retrieve(stripe_id)
     end
 
     def stripe_customer
-      @stripe_customer ||= Stripe::Customer.retrieve(id: stripe_customer_id, expand: ["default_source"])
+      @stripe_customer ||= ::Stripe::Customer.retrieve(id: stripe_customer_id, expand: ["default_source"])
     end
 
     def stripe_card
@@ -38,14 +40,14 @@ module Saas
     private
 
       def create_stripe_subscription
-        stripe_customer = Stripe::Customer.create(
+        stripe_customer = ::Stripe::Customer.create(
           # TODO: require subscriber to have email and description methods. don't go through owner.
-          :email => subscriber.owner.email,
-          :description => subscriber.owner.name,
-          :source  => stripe_token,
+          email: subscriber.owner.email,
+          description: subscriber.owner.name,
+          source: stripe_token,
         )
 
-        stripe_subscription = Stripe::Subscription.create(
+        stripe_subscription = ::Stripe::Subscription.create(
           customer: stripe_customer.id,
           items: [{
             plan: plan.stripe_id
