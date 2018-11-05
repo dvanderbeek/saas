@@ -10,6 +10,7 @@ if rails_config && rails_config[:stripe]
 
   StripeEvent.configure do |events|
     events.subscribe 'charge.succeeded' do |event|
+      # TODO: create charge model and save details
       puts "CHARGE SUCCEEDED: #{event}"
     end
   end
