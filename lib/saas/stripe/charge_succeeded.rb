@@ -3,7 +3,7 @@ module Saas
     class ChargeSucceeded
       def call(event)
         object = event.data.object
-        subscription = ::Saas::Subscription.find_by(stripe_customer_id: object.source.customer)
+        subscription = ::Saas::Subscription.find_by(stripe_customer_id: object.customer)
 
         return if subscription.charges.where(stripe_id: object.id).any?
 
