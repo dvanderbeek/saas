@@ -39,6 +39,10 @@ module Saas
           email: subscriber.email,
           description: subscriber.description,
           source: stripe_token,
+          metadata: {
+            subscriber_id: subscriber_id,
+            subscriber_type: subscriber_type
+          }
         )
 
         stripe_subscription = ::Stripe::Subscription.create(
