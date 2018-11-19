@@ -15,7 +15,7 @@
 
   <div class="form-group">
     <%= form.label :plan_id %><br>
-    <%= form.select :plan_id, options_from_collection_for_select(Saas::Plan.all, :id, :name), {}, class: "form-control" %>
+    <%= form.select :plan_id, options_from_collection_for_select(Saas::Plan.includes(:product).all, :id, :identifier), {}, class: "form-control" %>
   </div>
 
   <script src="https://checkout.stripe.com/checkout.js" 
