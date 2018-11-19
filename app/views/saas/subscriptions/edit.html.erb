@@ -1,5 +1,7 @@
-<% if @subscription.new_record? %>
-  <%= render "create_subscription" %>
-<% else %>
-  <%= render "manage_subscription" %>
-<% end %>
+<div class="container">
+  <% if @subscription.new_record? %>
+    <%= render "create_subscription" %>
+  <% else %>
+    <%= render "manage_subscription" %>
+  <% end %>
+</div>
