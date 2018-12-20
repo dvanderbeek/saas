@@ -1,7 +1,132 @@
 <div class="container">
-  <% if @subscription.new_record? %>
-    <%= render "create_subscription" %>
-  <% else %>
-    <%= render "manage_subscription" %>
-  <% end %>
+  <h1>Billing Info</h1>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          Your Plan
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <strong>Product</strong>
+            <span class="float-right"><%= @subscription.plan.product_name %></span>
+          </li>
+          <li class="list-group-item">
+            <strong>Plan</strong>
+            <span class="float-right"><%= @subscription.plan.name %></span>
+          </li>
+          <li class="list-group-item">
+            <strong>Pricing</strong>
+            <span class="float-right"><%= number_to_currency @subscription.plan.price_in_cents / 100.0 %> per <%= @subscription.plan.interval %></span>
+          </li>
+        </ul>
+        <div class="card-body">
+          <%= link_to "Change your plan", pricing_index_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          Next Invoice
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <strong>Account balance</strong>
+            <span class="float-right"><%= number_to_currency @subscription.stripe_customer.account_balance / 100.0 %></span>
+          </li>
+          <% if @upcoming %>
+            <li class="list-group-item">
+              <strong>Next invoice date</strong>
+              <span class="float-right"><%= date_from_stripe_timestamp(@upcoming.next_payment_attempt) %></span>
+            </li>
+            <li class="list-group-item">
+              <strong>Invoice total</strong>
+              <span class="float-right"><%= number_to_currency @upcoming.total / 100.0 %></span>
+            </li>
+            <li class="list-group-item">
+              <strong>Amount due</strong>
+              <span class="float-right"><%= number_to_currency @upcoming.amount_due / 100.0 %></span>
+            </li>
+            <li class="list-group-item">
+              <strong>Ending balance</strong>
+              <span class="float-right"><%= number_to_currency @upcoming.ending_balance / 100.0 %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          Credit Card
+        </div>
+        <div class="card-body">
+          <p>
+            <strong><%= @subscription.card_brand %> **** **** **** <%= @subscription.last_4 %></strong>
+            Expiration: <strong><%= @subscription.card_exp_month %>/<%= @subscription.card_exp_year %></strong>
+          </p>
+
+          <%= form_with(model: @subscription, url: subscription_path, method: :patch, local: true) do |form| %>
+            <script src="https://checkout.stripe.com/checkout.js"
+              class="stripe-button"
+              data-key="<%= Saas.stripe_public_key %>"
+              data-email="<%= current_user.email %>"
+              data-name="Interstate"
+              data-panel-label="Update Card Details"
+              data-label="Update Card Details"
+              data-allow-remember-me=false
+              data-locale="auto">
+            </script>
+            <style>.stripe-button-el { display: none; }</style>
+            <button class="btn btn-primary">Update Card Details</button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-header">
+          Payment History
+        </div>
+        <% if @subscription.stripe_customer.charges.data.length > 0 %>
+          <div class="list-group list-group-flush">
+            <% @subscription.stripe_customer.charges.each do |charge| %>
+              <div class="list-group-item">
+                <div class="row">
+                  <div class="col-1">
+                    <% if charge.refunded? %>
+                      <%= icon('fas', 'reply', class: 'text-info', data: { toggle: "tooltip" }, title: "#{number_to_currency(charge.amount_refunded_cents / 100.0)} refunded") %>
+                    <% elsif ["succeeded", "paid"].include?(charge.status) %>
+                      <%= icon('fas', 'check', class: 'text-success') %>
+                    <% else %>
+                      <%= icon('fas', 'exclamation-triangle', class: 'text-danger') %>
+                    <% end %>
+                  </div>
+                  <div class="col-3"><%= Time.at(charge.created).strftime("%Y-%m-%d") %></div>
+                  <div class="col-5"><%= charge.source.brand %> ending in <%= charge.source.last4 %></div>
+                  <div class="col-3 text-right"><%= number_to_currency charge.amount / 100.0 %></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="card-body">
+            You have not made any payments yet.
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+  <script>
+     $('[data-toggle="tooltip"]').tooltip()
+  </script>
 </div>

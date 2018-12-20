@@ -6,7 +6,7 @@ module Saas
       if @subscription = Subscription.includes(:charges).find_by(subscriber: current_subscriber)
         @upcoming = @subscription.upcoming_invoice
       else
-        @subscription = Subscription.new(subscriber: current_subscriber)
+        redirect_to pricing_index_path
       end
     end
 
