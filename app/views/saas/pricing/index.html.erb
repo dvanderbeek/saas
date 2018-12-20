@@ -1,21 +1,53 @@
 <div class="container">
-  <%= link_to "HOME", main_app.root_path %>
-
-  <h1>Plans</h1>
-
-  <% @products.each do |product| %>
-    <div class="card">
-      <h5 class="card-header">
-        <%= product.name %>    
-      </h5>
-      <div class="card-body">
-        <% product.plans.each do |plan| %>
-          <p>
-            <%= plan.name %>
-            <%= number_to_currency plan.price_in_cents / 100.0 %> per <%= plan.interval %>    
-          </p>
-        <% end %>
+  <div class="pt-5 pb-3">
+    <div class="row">
+      <div class="col">
+        <h3>Subscription plans</h3>
+      </div>
+      <div class="col">
+        <ul class="nav nav-pills mb-3 float-right">
+          <% @plans_by_interval.each_with_index do |(interval, plans), index| %>
+            <li class="nav-item">
+              <a class="nav-link <%= 'active' if index == 0 %>" data-toggle="tab" href="#<%= interval %>">
+                <%= interval_display(interval) %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
       </div>
     </div>
-  <% end %>
+  </div>
+
+  <div class="tab-content">
+    <% @plans_by_interval.each_with_index do |(interval, plans), index| %>
+      <div class="tab-pane fade show <%= 'active' if index == 0 %>" id="<%= interval %>" role="tabpanel">
+        <div class="row">
+          <% plans.sort_by(&:price_in_cents).each do |plan| %>
+            <div class="col">
+              <div class="card text-center">
+                <div class="card-header bg-primary text-white">
+                  <h5>
+                    <span class="badge badge-lg badge-pill badge-primary" style="background-color: rgba(255, 255, 255, 0.2); font-weight: 300;">
+                      <%= plan.product.name %>
+                    </span>
+                  </h5>
+                  <h3 class="display-4 mb-0">
+                    <%= number_to_currency plan.price_in_cents / 100.0, precision: 0 %>
+                  </h3>
+                  <span style="opacity: 0.7;">
+                    per <%= plan.interval %>
+                  </span>
+                </div>
+                <div class="card-body">
+                  <!-- <p>asdf</p> -->
+                  <%= link_to "Select this plan", "#", class: "btn btn-block btn-primary" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
 </div>
