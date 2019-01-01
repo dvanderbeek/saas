@@ -3,7 +3,7 @@ module Saas
     before_action :authenticate_user!
 
     def edit
-      if @subscription = Subscription.includes(:charges).find_by(subscriber: current_subscriber)
+      if @subscription = Subscription.find_by(subscriber: current_subscriber)
         @upcoming = @subscription.upcoming_invoice
       else
         redirect_to pricing_index_path
@@ -23,7 +23,7 @@ module Saas
     end
 
     def update
-      @subscription = Subscription.includes(:charges).find_by(subscriber: current_subscriber)
+      @subscription = Subscription.find_by(subscriber: current_subscriber)
       @subscription.stripe_token = params[:stripeToken]
 
       if @subscription.update(subscription_params)
