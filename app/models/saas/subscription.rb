@@ -19,6 +19,11 @@ module Saas
       @stripe_customer ||= ::Stripe::Customer.retrieve(id: stripe_customer_id, expand: ["default_source"])
     end
 
+    def stripe_customer_balance
+      return stripe_customer.account_balance if stripe_customer.respond_to?(:account_balance)
+      return stripe_customer.balance if stripe_customer.respond_to?(:balance)
+    end
+
     def stripe_card
       case stripe_customer.default_source
       when String
