@@ -163,7 +163,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  devise
+  devise (>= 4.7.1)
   pg
   saas!
 
