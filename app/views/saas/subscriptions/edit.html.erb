@@ -7,6 +7,11 @@
         <div class="card-header">
           Your Plan
         </div>
+        <% if @subscription.cancellation_pending? %>
+          <div class="alert alert-danger rounded-0 m-0 text-white">
+            Your subscription will end on <%= Time.at(@subscription.stripe_subscription.cancel_at).strftime("%Y-%m-%d") %>
+          </div>
+        <% end %>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             <strong>Product</strong>
@@ -23,6 +28,12 @@
         </ul>
         <div class="card-body">
           <%= link_to "Change your plan", pricing_index_path, class: "btn btn-primary" %>
+
+          <% if @subscription.cancellation_pending? %>
+            <%= link_to "Resume your subscription", resume_subscription_path, method: :patch, class: "btn btn-outline-success float-right" %>
+          <% else %>
+            <%= link_to "Cancel your subscription", cancel_subscription_path, method: :patch, class: "btn btn-outline-danger float-right" %>
+          <% end %>
         </div>
       </div>
     </div>

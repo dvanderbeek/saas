@@ -34,7 +34,15 @@ module Saas
     end
 
     def upcoming_invoice
-      stripe_customer.upcoming_invoice
+      begin
+        stripe_customer.upcoming_invoice
+      rescue ::Stripe::InvalidRequestError
+        nil
+      end
+    end
+
+    def cancellation_pending?
+      stripe_subscription.cancel_at.present? && Time.zone.now < Time.at(stripe_subscription.cancel_at)
     end
 
     private
@@ -75,6 +83,14 @@ module Saas
           self.card_brand = stripe_card.brand
           self.card_exp_month = stripe_card.exp_month
           self.card_exp_year = stripe_card.exp_year
+        elsif stripe_subscription.status != "active"
+          stripe_subscription = ::Stripe::Subscription.create(
+            customer: stripe_customer.id,
+            items: [{
+              plan: plan.stripe_id
+            }]
+          )
+          self.stripe_id = stripe_subscription.id
         else
           stripe_subscription.items = [{
             id: stripe_subscription.items.data[0].id,
