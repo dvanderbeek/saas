@@ -19,6 +19,14 @@ module Saas
       @stripe_customer ||= ::Stripe::Customer.retrieve(id: stripe_customer_id, expand: ["default_source"])
     end
 
+    def active?
+      stripe_subscription.status == "active"
+    end
+
+    def paid?
+      plan.price_in_cents > 0
+    end
+
     def stripe_customer_balance
       return stripe_customer.account_balance if stripe_customer.respond_to?(:account_balance)
       return stripe_customer.balance if stripe_customer.respond_to?(:balance)
