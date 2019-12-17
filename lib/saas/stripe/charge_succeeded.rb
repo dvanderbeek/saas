@@ -5,6 +5,7 @@ module Saas
         object = event.data.object
         subscription = ::Saas::Subscription.find_by(stripe_customer_id: object.customer)
 
+        return if subscription.nil?
         return if subscription.charges.where(stripe_id: object.id).any?
 
         subscription.charges.create(
