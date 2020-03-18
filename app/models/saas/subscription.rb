@@ -74,8 +74,6 @@ module Saas
           }]
         )
 
-        byebug
-
         self.stripe_customer_id = stripe_customer.id
         self.stripe_id = stripe_subscription.id
         self.last_4 = stripe_card.last4
