@@ -1,6 +1,6 @@
 module Saas
   class Subscription < ApplicationRecord
-    attr_accessor :stripe_token
+    attr_accessor :stripe_token, :coupon_code
 
     belongs_to :plan
     belongs_to :subscriber, polymorphic: true
@@ -68,10 +68,13 @@ module Saas
 
         stripe_subscription = ::Stripe::Subscription.create(
           customer: stripe_customer.id,
+          coupon: coupon_code,
           items: [{
             plan: plan.stripe_id
           }]
         )
+
+        byebug
 
         self.stripe_customer_id = stripe_customer.id
         self.stripe_id = stripe_subscription.id

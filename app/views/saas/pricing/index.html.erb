@@ -44,6 +44,11 @@
 
                       <%= form.hidden_field :plan_id, value: plan.id %>
 
+                      <div class="form-group">
+                        <%= form.label :coupon_code %>
+                        <%= form.text_field :coupon_code, class: "form-control" %>
+                      </div>
+
                       <% if @subscription.new_record? %>
                         <script src="https://checkout.stripe.com/checkout.js"
                           class="stripe-button"

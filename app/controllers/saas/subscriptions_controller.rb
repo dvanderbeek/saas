@@ -51,7 +51,7 @@ module Saas
     private
 
       def subscription_params
-        params.fetch(:subscription, {}).permit(:plan_id, :stripe_token)
+        params.fetch(:subscription, {}).permit(:plan_id, :stripe_token, :coupon_code)
       end
 
       def load_subscription
