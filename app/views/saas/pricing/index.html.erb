@@ -70,6 +70,14 @@
                     <% end %>
                   </div>
                 <% end %>
+
+                <% if plan.product.features.any? %>
+                  <ul class="list-group list-group-flush">
+                    <% plan.product.features.order(position: :asc).each do |feature| %>
+                      <li class="list-group-item"><%= feature.description %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
               </div>
             </div>
           <% end %>
