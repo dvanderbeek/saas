@@ -5,22 +5,39 @@ module Saas
 
     def edit
       if @subscription && @subscription.stripe_subscription.status == "active"
-        @upcoming = @subscription.upcoming_invoice
+        # @upcoming = @subscription.upcoming_invoice
+        session = ::Stripe::BillingPortal::Session.create({
+          customer: @subscription.stripe_customer_id,
+          return_url: 'https://f76c43318cad.ngrok.io',
+        })
+        redirect_to session.url
       else
         redirect_to pricing_index_path
       end
     end
 
     def create
-      @subscription = Subscription.new(subscription_params)
-      @subscription.stripe_token = params[:stripeToken]
-      @subscription.subscriber = current_subscriber
-
-      if @subscription.save
-        redirect_to [:edit, :subscription], notice: 'Subscription was successfully created.'
-      else
-        render :edit
-      end
+      plan = Saas::Plan.find(params[:subscription][:plan_id])
+      @session = ::Stripe::Checkout::Session.create(
+        customer_email: current_subscriber.email,
+        payment_method_types: ['card'],
+        line_items: [{
+          price: plan.stripe_id,
+          quantity: 1,
+        }],
+        mode: 'subscription',
+        success_url: 'https://f76c43318cad.ngrok.io/billing/subscription/edit?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url: 'https://f76c43318cad.ngrok.io/billing/subscription/edit',
+      )
+      # @subscription = Subscription.new(subscription_params)
+      # @subscription.stripe_token = params[:stripeToken]
+      # @subscription.subscriber = current_subscriber
+      #
+      # if @subscription.save
+      #   redirect_to [:edit, :subscription], notice: 'Subscription was successfully created.'
+      # else
+      #   render :edit
+      # end
     end
 
     def update

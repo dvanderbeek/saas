@@ -49,7 +49,7 @@
                         <%= form.text_field :coupon_code, class: "form-control" %>
                       </div>
 
-                      <% if @subscription.new_record? %>
+                      <% if false # @subscription.new_record? %>
                         <script src="https://checkout.stripe.com/checkout.js"
                           class="stripe-button"
                           data-key="<%= Saas.stripe_public_key %>"

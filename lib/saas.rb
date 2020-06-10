@@ -3,6 +3,7 @@ require "stripe"
 require "stripe_event"
 require "saas/stripe/charge_succeeded"
 require "saas/stripe/charge_refunded"
+require "saas/stripe/checkout_session_completed"
 
 module Saas
   mattr_accessor :stripe_secret_key, :stripe_public_key, :stripe_signing_secret, :app_name

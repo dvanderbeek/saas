@@ -107,7 +107,7 @@
         <div class="card-header">
           Payment History
         </div>
-        <% if @subscription.stripe_customer.charges.data.length > 0 %>
+        <% if false # @subscription.stripe_customer.charges.data.length > 0 %>
           <div class="list-group list-group-flush">
             <% @subscription.stripe_customer.charges.each do |charge| %>
               <div class="list-group-item">

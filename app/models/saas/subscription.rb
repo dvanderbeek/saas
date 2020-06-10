@@ -8,8 +8,8 @@ module Saas
 
     validates :stripe_customer_id, presence: true
 
-    before_validation :create_stripe_subscription, on: :create
-    before_validation :update_stripe_subscription, on: :update
+    # before_validation :create_stripe_subscription, on: :create
+    # before_validation :update_stripe_subscription, on: :update
 
     def stripe_subscription
       @stripe_subscription ||= ::Stripe::Subscription.retrieve(stripe_id)
