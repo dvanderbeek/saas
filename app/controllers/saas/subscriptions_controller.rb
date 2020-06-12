@@ -4,7 +4,7 @@ module Saas
     before_action :load_subscription, only: [:edit, :cancel, :resume]
 
     def edit
-      if @subscription && @subscription.stripe_subscription.status == "active"
+      if @subscription && @subscription.active?
         # @upcoming = @subscription.upcoming_invoice
         session = ::Stripe::BillingPortal::Session.create({
           customer: @subscription.stripe_customer_id,
