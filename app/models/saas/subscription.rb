@@ -20,7 +20,7 @@ module Saas
     end
 
     def active?
-      stripe_subscription.status == "active"
+      (status || stripe_subscription.status) == "active"
     end
 
     def paid?
@@ -50,7 +50,8 @@ module Saas
     end
 
     def cancellation_pending?
-      stripe_subscription.cancel_at.present? && Time.zone.now < Time.at(stripe_subscription.cancel_at)
+      cancel_at_time = cancel_at || stripe_subscription.cancel_at
+      cancel_at_time.present? && Time.zone.now < Time.at(cancel_at_time)
     end
 
     private

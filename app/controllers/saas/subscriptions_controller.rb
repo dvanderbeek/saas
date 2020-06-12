@@ -8,7 +8,7 @@ module Saas
         # @upcoming = @subscription.upcoming_invoice
         session = ::Stripe::BillingPortal::Session.create({
           customer: @subscription.stripe_customer_id,
-          return_url: 'https://f76c43318cad.ngrok.io',
+          return_url: 'https://4c597d139e25.ngrok.io',
         })
         redirect_to session.url
       else
@@ -18,17 +18,22 @@ module Saas
 
     def create
       plan = Saas::Plan.find(params[:subscription][:plan_id])
-      @session = ::Stripe::Checkout::Session.create(
+
+      args = {
         customer_email: current_subscriber.email,
         payment_method_types: ['card'],
         line_items: [{
           price: plan.stripe_id,
           quantity: 1,
         }],
+        subscription_data: {},
         mode: 'subscription',
-        success_url: 'https://f76c43318cad.ngrok.io/billing/subscription/edit?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url: 'https://f76c43318cad.ngrok.io/billing/subscription/edit',
-      )
+        success_url: 'https://4c597d139e25.ngrok.io/billing/subscription/edit?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url: 'https://4c597d139e25.ngrok.io/billing/subscription/edit',
+      }
+      args[:subscription_data][:coupon] = params[:subscription][:coupon_code] if params[:subscription][:coupon_code].present?
+
+      @session = ::Stripe::Checkout::Session.create(args)
       # @subscription = Subscription.new(subscription_params)
       # @subscription.stripe_token = params[:stripeToken]
       # @subscription.subscriber = current_subscriber

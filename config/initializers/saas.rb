@@ -12,5 +12,6 @@ if rails_config && rails_config[:stripe]
     events.subscribe 'charge.succeeded', Saas::Stripe::ChargeSucceeded.new
     events.subscribe 'charge.refunded', Saas::Stripe::ChargeRefunded.new
     events.subscribe 'checkout.session.completed', Saas::Stripe::CheckoutSessionCompleted.new
+    events.subscribe 'customer.subscription.updated', Saas::Stripe::SubscriptionUpdated.new
   end
 end
