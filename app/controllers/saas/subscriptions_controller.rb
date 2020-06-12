@@ -8,7 +8,7 @@ module Saas
         # @upcoming = @subscription.upcoming_invoice
         session = ::Stripe::BillingPortal::Session.create({
           customer: @subscription.stripe_customer_id,
-          return_url: "http://localhost:3000/esign/signature_requests",
+          return_url: main_app.root_url,
         })
         redirect_to session.url
       else
@@ -28,8 +28,8 @@ module Saas
         }],
         subscription_data: {},
         mode: 'subscription',
-        success_url: 'http://localhost:3000/billing/subscription/edit?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url: 'http://localhost:3000/billing/subscription/edit',
+        success_url: "#{edit_subscription_url}?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: edit_subscription_url,
       }
       args[:subscription_data][:coupon] = params[:subscription][:coupon_code] if params[:subscription][:coupon_code].present?
 
