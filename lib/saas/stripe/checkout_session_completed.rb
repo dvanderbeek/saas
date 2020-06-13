@@ -3,12 +3,13 @@ module Saas
     class CheckoutSessionCompleted
       def call(event)
         object = event.data.object
-        user = ::User.find_by(email: object.customer_email)
-        account = user.account
+        # user = ::User.find_by(email: object.customer_email)
+        # account = user.account
+        account = ::Account.find(object.client_reference_id)
 
-        ss = ::Stripe::Subscription.retrieve(object.subscription)
+        ss   = ::Stripe::Subscription.retrieve(object.subscription)
         plan = ::Saas::Plan.find_by(stripe_id: ss.plan.id)
-        pm = ::Stripe::PaymentMethod.list(customer: object.customer, type: "card").first
+        pm   = ::Stripe::PaymentMethod.list(customer: object.customer, type: "card").first
 
         sub = Subscription.new(
           subscriber: account,
