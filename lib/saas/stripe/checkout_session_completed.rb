@@ -5,6 +5,7 @@ module Saas
         object = event.data.object
         # user = ::User.find_by(email: object.customer_email)
         # account = user.account
+        # TODO: Probably need a configuration setting for subscriber class. It's not necessarily Account
         account = ::Account.find(object.client_reference_id)
 
         ss   = ::Stripe::Subscription.retrieve(object.subscription)
