@@ -30,6 +30,7 @@ module Saas
         mode: 'subscription',
         success_url: "#{edit_subscription_url}?session_id={CHECKOUT_SESSION_ID}",
         cancel_url: edit_subscription_url,
+        client_reference_id: current_subscriber.id
       }
       args[:subscription_data][:coupon] = params[:subscription][:coupon_code] if params[:subscription][:coupon_code].present?
 
