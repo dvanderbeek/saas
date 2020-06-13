@@ -21,6 +21,7 @@ module Saas
           card_brand: pm.card.brand,
           card_exp_month: pm.card.exp_month,
           card_exp_year: pm.card.exp_year,
+          status: ss.status
         )
         sub.save
         # subscription = ::Saas::Subscription.find_by(stripe_customer_id: object.customer)
