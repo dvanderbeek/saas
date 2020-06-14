@@ -6,6 +6,7 @@ if rails_config && rails_config[:stripe]
     config.stripe_public_key = rails_config[:stripe][:public_key]
     config.stripe_secret_key = rails_config[:stripe][:secret_key]
     config.stripe_signing_secret = rails_config[:stripe][:signing_secret]
+    config.stripe_subscriber_class_name = "Customer"
   end
 
   StripeEvent.configure do |events|

@@ -7,7 +7,11 @@ require "saas/stripe/checkout_session_completed"
 require "saas/stripe/subscription_updated"
 
 module Saas
-  mattr_accessor :stripe_secret_key, :stripe_public_key, :stripe_signing_secret, :app_name
+  mattr_accessor :stripe_secret_key,
+                 :stripe_public_key,
+                 :stripe_signing_secret,
+                 :stripe_subscriber_class_name,
+                 :app_name
 
   def self.configure
     yield self
