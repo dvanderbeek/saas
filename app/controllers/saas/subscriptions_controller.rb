@@ -19,7 +19,7 @@ module Saas
     def create
       plan = Saas::Plan.find(params[:subscription][:plan_id])
 
-      args = {
+      attrs = {
         customer_email: current_subscriber.email,
         payment_method_types: ['card'],
         line_items: [{
@@ -32,18 +32,9 @@ module Saas
         cancel_url: edit_subscription_url,
         client_reference_id: current_subscriber.id
       }
-      args[:subscription_data][:coupon] = params[:subscription][:coupon_code] if params[:subscription][:coupon_code].present?
+      attrs[:subscription_data][:coupon] = params[:subscription][:coupon_code] if params[:subscription][:coupon_code].present?
 
-      @session = ::Stripe::Checkout::Session.create(args)
-      # @subscription = Subscription.new(subscription_params)
-      # @subscription.stripe_token = params[:stripeToken]
-      # @subscription.subscriber = current_subscriber
-      #
-      # if @subscription.save
-      #   redirect_to [:edit, :subscription], notice: 'Subscription was successfully created.'
-      # else
-      #   render :edit
-      # end
+      @session = ::Stripe::Checkout::Session.create(attrs)
     end
 
     def update
