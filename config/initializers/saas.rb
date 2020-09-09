@@ -12,5 +12,6 @@ if rails_config && rails_config[:stripe]
   StripeEvent.configure do |events|
     events.subscribe 'checkout.session.completed', Saas::Stripe::CheckoutSessionCompleted.new
     events.subscribe 'customer.subscription.updated', Saas::Stripe::SubscriptionUpdated.new
+    events.subscribe 'customer.subscription.deleted', Saas::Stripe::SubscriptionDeleted.new
   end
 end

@@ -5,6 +5,7 @@ require "saas/stripe/charge_succeeded"
 require "saas/stripe/charge_refunded"
 require "saas/stripe/checkout_session_completed"
 require "saas/stripe/subscription_updated"
+require "saas/stripe/subscription_deleted"
 
 module Saas
   mattr_accessor :stripe_secret_key,
