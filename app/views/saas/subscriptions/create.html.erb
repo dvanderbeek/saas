@@ -1,6 +1,8 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  var stripe = Stripe('<%= Rails.application.credentials.development[:stripe][:public_key] %>');
+
+  <% stripe_key = Rails.env.production? ? Rails.application.credentials.production[:stripe][:public_key] : Rails.application.credentials.development[:stripe][:public_key] %>
+  var stripe = Stripe('<%= stripe_key %>');
   stripe.redirectToCheckout({
     // Make the id field from the Checkout Session creation API response
     // available to this file, so you can provide it as parameter here
