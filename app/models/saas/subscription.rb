@@ -8,6 +8,8 @@ module Saas
 
     validates :stripe_customer_id, presence: true
 
+    scope :active, -> { where(status: "active") }
+
     # before_validation :create_stripe_subscription, on: :create
     # before_validation :update_stripe_subscription, on: :update
 
