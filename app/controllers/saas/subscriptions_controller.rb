@@ -69,7 +69,7 @@ module Saas
       end
 
       def load_subscription
-        @subscription = Subscription.find_by(subscriber: current_subscriber)
+        @subscription = Subscription.active.find_by(subscriber: current_subscriber)
       end
   end
 end
