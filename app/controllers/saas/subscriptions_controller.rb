@@ -33,7 +33,6 @@ module Saas
         client_reference_id: current_subscriber.id,
         allow_promotion_codes: true
       }
-      attrs[:subscription_data][:coupon] = params[:subscription][:coupon_code] if params[:subscription][:coupon_code].present?
 
       @session = ::Stripe::Checkout::Session.create(attrs)
     end
@@ -66,7 +65,7 @@ module Saas
     private
 
       def subscription_params
-        params.fetch(:subscription, {}).permit(:plan_id, :stripe_token, :coupon_code)
+        params.fetch(:subscription, {}).permit(:plan_id, :stripe_token)
       end
 
       def load_subscription

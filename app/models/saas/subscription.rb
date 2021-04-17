@@ -1,6 +1,6 @@
 module Saas
   class Subscription < ApplicationRecord
-    attr_accessor :stripe_token, :coupon_code
+    attr_accessor :stripe_token
 
     belongs_to :plan
     belongs_to :subscriber, polymorphic: true
