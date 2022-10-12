@@ -10,7 +10,7 @@ module Saas
           customer: @subscription.stripe_customer_id,
           return_url: main_app.root_url,
         })
-        redirect_to session.url
+        redirect_to session.url, allow_other_host: true
       else
         redirect_to pricing_index_path
       end
